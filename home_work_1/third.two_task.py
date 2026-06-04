@@ -1,3 +1,10 @@
+# 3. два wsgi приложения
+#    1. первое возвращает "Hello" и статус "200 OK" если запрос идёт на
+#       /api, и "Error" с статусом "403 Forbidden" иначе
+#    2. использует первое приложение, добавляя дополнительный http хедер
+#       "Subserver" со значением "my-wsgi", а так же добавляет "<html>"
+#       перед данными и "</html>" после данных.
+       
 def simple_app(environ, start_response): #gunicorn --bind 0.0.0.0:8000 main:simple_app
     
     path = environ.get('PATH_INFO', '/')
