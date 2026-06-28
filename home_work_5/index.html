@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <title>Мой первый фронт в рамках обучения!</title>
+    </head>
+    <body>
+        <h1>Привет, Игорь!</h1>
+        <p>Я сделал калькулятор, как ты и просил</p>
+
+        <input id="first" type="text" placeholder="Введи первое число">
+        <input id="second" type="text" placeholder="Введи второе число">
+
+        <button id="plus">Нажми на меня, чтобы сложить 2 числа</button>
+        <button id="minus">Нажми на меня, чтобы вычесть 2 из 1го числа</button>
+
+        <p>Ответ от сервера: <span id="answer">пока нет</span></p>
+
+        <script>
+            const f_input = document.querySelector("#first");
+            const s_input = document.querySelector("#second");
+
+            const plus_button = document.querySelector("#plus");
+            const minus_button = document.querySelector("#minus");
+
+            const answer = document.querySelector("#answer");
+
+            async function sendToBackend(operation) {
+                const first_number = f_input.value;
+                const second_number = s_input.value;
+
+                const response = await fetch("http://localhost:3000/api/calc", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        first: first_number,
+                        second: second_number,
+                        operation: operation
+                    })
+                });
+
+                const data = await response.json();
+
+                console.log(data);
+
+                answer.textContent = data.result;
+            }
+
+            plus_button.addEventListener("click", function () {
+                sendToBackend("plus");
+            });
+
+            minus_button.addEventListener("click", function () {
+                sendToBackend("minus");
+            });
+        </script>
+    </body>
+</html>
